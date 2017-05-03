@@ -9,6 +9,7 @@ func init() {
  }
   
 func main() {
+  Log(Prefix("SYMPATHY", Magenta), "Is this the real life?")
   i := 42
   Info("var i =",i)
   Debug("exit")
