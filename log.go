@@ -3,19 +3,32 @@ package log
 import (
 	"fmt"
 	"time"
+)
 
-	"github.com/fatih/color"
+const (
+	Black = 30 + iota
+	Red
+	Green
+	Yellow
+	Blue
+	Magenta
+	Cyan
+	White
 )
 
 var start = time.Now()
 
-func Log(prefix, s string, a ...interface{}) {
-	fmt.Printf("%6.6f %6s\t%-12s%s", time.Since(start).Seconds(), prefix, s, fmt.Sprintln(a...))
+func Log(prefix string, a ...interface{}) {
+	fmt.Printf("%6.6f  %-18s%s", time.Since(start).Seconds(), prefix, fmt.Sprintln(a...))
+}
+
+func Prefix(s string, color int) string {
+	return fmt.Sprintf("\x1b[%dm%s\x1b[0m", color, s)
 }
 
 var (
-	Info  = func(s string, a ...interface{}) { Log(color.BlueString("INFO"), s, a...) }
-	Debug = func(s string, a ...interface{}) { Log(color.GreenString("DEBUG"), s, a...) }
-	Warn  = func(s string, a ...interface{}) { Log(color.YellowString("WARNING"), s, a...) }
-	Err   = func(s string, a ...interface{}) { Log(color.RedString("ERROR"), s, a...) }
+	Info  = func(a ...interface{}) { Log(Prefix("INFO", Blue), a...) }
+	Debug = func(a ...interface{}) { Log(Prefix("DEBUG", Green), a...) }
+	Warn  = func(a ...interface{}) { Log(Prefix("WARNING", Yellow), a...) }
+	Err   = func(a ...interface{}) { Log(Prefix("ERROR", Red), a...) }
 )
